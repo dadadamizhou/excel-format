@@ -27,8 +27,9 @@ def recursion_format_excel(sheet: Worksheet, data_list: list, parent_id: int = 0
                 sheet.merge_cells(merge_range)
                 cell = sheet[f"{column_letter}{res['row']}"]
                 cell.value = d["name"]
-                cell.alignment = Alignment(horizontal='center', vertical='center')
-            cell.fill = PatternFill(fill_type='solid', fgColor=d["bgc"])
+            cell.alignment = Alignment(horizontal='center', vertical='center')
+            if d["bgc"].rgb != '00000000':
+                cell.fill = PatternFill(fill_type='solid', fgColor=d["bgc"])
             res = recursion_res
     return res
 
@@ -47,7 +48,7 @@ def format_excel(file_name: str):
                     "money": row[2].value,
                     "parent_id": row[3].value,
                     "level": row[4].value,
-                    "bgc": row[4].fill.start_color.rgb
+                    "bgc": row[4].fill.fgColor
                 })
         excel_file.remove(excel_file[sheet_list[1]])
         sheet2 = excel_file.create_sheet(title='Sheet2')
